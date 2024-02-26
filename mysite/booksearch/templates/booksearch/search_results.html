@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Search Results for "{{ form.cleaned_data.query }}" in {{ model }}</h1>
+
+{% for item in results %}
+    <p>{{ item }}</p>
+{% endfor %}
+
+</body>
+</html>

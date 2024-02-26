@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Book</title>
+</head>
+<body>
+    <h1>Add a Book</h1>
+    <form method="post" action="{% url 'add_book' %}">
+        {% csrf_token %}
+        {{ form.title.label_tag }} {{ form.title }}<br>
+        {{ form.author.label_tag }} {{ form.author }}<br>
+
+        <button type="submit">Add Book</button>
+    </form>
+
+    <!-- Add the button for deleting all books -->
+    <form method="post" action="{% url 'delete_all_books' %}">
+        {% csrf_token %}
+        <button type="submit" onclick="return confirm('Are you sure you want to delete all books?');">Delete All Books</button>
+    </form>
+
+    <br>
+    <!-- Add a search form -->
+    <form method="get" action="{% url 'search_view' model='book' %}">
+        <label for="search_query">Search:</label>
+        <input type="text" name="query" id="search_query">
+        <button type="submit">Search</button>
+    </form>
+
+    <a href="{% url 'book_list' %}">Back to Book List</a>
+</body>
+</html>

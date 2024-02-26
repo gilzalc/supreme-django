@@ -1,0 +1,23 @@
+<!-- myapp/templates/myapp/book_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book List</title>
+</head>
+<body>
+    <h1>Book List </h1>
+    <ul>
+        {% for book in books %}
+            <li>{{ book }} by {{ book.author }}</li>
+        {% endfor %}
+    </ul>
+<a href="{% url 'add_book' %}">Back to add book</a>
+{% block content %}
+  <h2>Export Books</h2>
+  <p>Click the button below to export the list of books to a CSV file.</p>
+
+  <a href="{% url 'export_books' %}" class="btn btn-primary">Export Books</a>
+{% endblock %}
+
+</body>
+</html>
