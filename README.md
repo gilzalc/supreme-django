@@ -1,1 +1,1 @@
-This is a README file
+This is a README file for the Django Book store with the search microservice
