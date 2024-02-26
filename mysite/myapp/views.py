@@ -41,3 +41,7 @@ def export_books(request):
     for book in books:
         writer.writerow([book.title, book.author])
     return response
+
+
+def welcome_view(request):
+    return render(request, 'myapp/welcome.html')
