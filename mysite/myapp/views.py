@@ -1,6 +1,6 @@
+# Myapp/views
 import csv
 from django.http import HttpResponse
-
 from django.shortcuts import render, redirect
 from .models import Book
 from .forms import BookForm
@@ -19,15 +19,15 @@ def add_book(request):
             return redirect('book_list')  # Redirect to the book list view
     else:
         form = BookForm()
-
     return render(request, 'myapp/add_book.html', {'form': form})
 
 
 def delete_all_books(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         Book.objects.all().delete()
         return redirect('book_list')  # Redirect to the book list view
-    return render(request, 'myapp/delete_all_books.html')
+    return HttpResponse("Not available for now")
+    # return render(request, 'myapp/delete_all_books.html')
 
 
 def export_books(request):
@@ -44,4 +44,4 @@ def export_books(request):
 
 
 def welcome_view(request):
-    return render(request, 'myapp/welcome.html')
+    return render(request, 'myapp/welcome.html', {'name': 'Zack'})
