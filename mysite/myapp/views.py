@@ -1,9 +1,12 @@
-# Myapp/views
+# myapp/views
+
 import csv
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Book
 from .forms import BookForm
+from rest_framework import generics
+from .serializers import BookSerializer
 
 
 def book_list(request):
@@ -45,3 +48,11 @@ def export_books(request):
 
 def welcome_view(request):
     return render(request, 'myapp/welcome.html', {'name': 'Zack'})
+
+
+# API views
+
+
+class BookListAPIView(generics.ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
