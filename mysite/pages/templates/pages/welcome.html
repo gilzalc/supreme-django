@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to My Django App</title>
-
+<!-- welcome_page.html -->
+{% extends 'base.html' %}
+{% block title %}Welcome to My Django App{% endblock %}
+{% block styles %}
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -28,13 +25,13 @@
             text-align: center;
         }
     </style>
-</head>
-<body>
+{% endblock %}
 
+{% block content %}
     <h1>Welcome to My Django App</h1>
-    {% if name%}
-    <h1> {{name }}</h1>
-    {%endif%}
+    {% if name %}
+        <h1>{{ name }}</h1>
+    {% endif %}
     <p>Enjoy your Django journey!</p>
-</body>
-</html>
+    {{ request.user }}
+{% endblock %}

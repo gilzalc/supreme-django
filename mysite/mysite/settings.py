@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     # My Apps
     'myapp',
     'booksearch',
+    'pages',
+
     # Django third party
     'debug_toolbar',
     'rest_framework',

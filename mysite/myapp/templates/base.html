@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Website{% endblock %}</title>
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <div id="content">
+        {% block content %} default xx{% endblock %}
+    </div>
+    <div id="footer">
+        <p>&copy; 2024 My Website. All rights reserved.</p>
+    </div>
+</body>
+</html>

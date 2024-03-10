@@ -50,9 +50,17 @@ def welcome_view(request):
     return render(request, 'myapp/welcome.html', {'name': 'Zack'})
 
 
+def book_detail_view(request):
+    obj = Book.objects.get(id=1)
+    # context = {
+    #     'title': obj.title,
+    #     'price': obj.price
+    # }
+    context = {'object': obj}
+    return render(request, "myapp/detail.html", context)
+
+
 # API views
-
-
 class BookListAPIView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
