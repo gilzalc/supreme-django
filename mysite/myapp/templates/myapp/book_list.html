@@ -2,16 +2,26 @@
 {% block title %}Book List{% endblock %}
 
 {% block content %}
-    <h1>Book List</h1>
-    <ul>
-        {% for book in books %}
-            <li>{{forloop.counter}}: {{ book }} by {{ book.author }}</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'add_book' %}">Back to add book</a>
+<h1>Book List</h1>
+<ul>
+    {% if objects%}
+    {% for instance in objects %}
+    <li>
+        <strong>{{ forloop.counter }}:</strong>
+        Book ID: {{ instance.id }},
+        <a href="{{ instance.get_absolute_url }}">{{ instance.title }}</a>
+        by {{ instance.author }}
+    </li>
+    <br>
+    {% endfor %}
+    {% else %}
+    No books for now
+    {%endif%}
+</ul>
+<a href="{% url 'myapp:add_book' %}">Back to add book</a>
 
-    <h2>Export Books</h2>
-    <p>Click the button below to export the list of books to a CSV file.</p>
+<h2>Export Books</h2>
+<p>Click the button below to export the list of books to a CSV file.</p>
 
-    <a href="{% url 'export_books' %}" class="btn btn-primary">Export Books</a>
+<a href="{% url 'myapp:export_books' %}" class="btn btn-primary">Export Books</a>
 {% endblock %}

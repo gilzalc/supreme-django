@@ -1,36 +1,34 @@
 # myapp/views
-
 import csv
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Book
 from .forms import BookForm
 from rest_framework import generics
 from .serializers import BookSerializer
 
 
-def book_list(request):
-    books = Book.objects.all()
-    return render(request, 'myapp/book_list.html', {'books': books})
+class BookCreateView(CreateView):
+    form_class = BookForm
+    queryset = Book.objects.all()
+    template_name = 'myapp/add_book.html'
+    success_url = reverse_lazy('myapp:book_list')
 
+    def form_valid(self, form):
+        return super().form_valid(form)
 
-def add_book(request):
-    if request.method == 'POST':
-        form = BookForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('book_list')  # Redirect to the book list view
-    else:
-        form = BookForm()
-    return render(request, 'myapp/add_book.html', {'form': form})
+    def get(self, request, *args, **kwargs):
+        form = self.get_form()
+        return self.render_to_response({'form': form, 'mode': 'Add'})
 
 
 def delete_all_books(request):
-    if request.method == 'GET':
+    if request.method == 'POST':
         Book.objects.all().delete()
-        return redirect('book_list')  # Redirect to the book list view
+        return redirect('myapp:book_list')  # Redirect to the book list view
     return HttpResponse("Not available for now")
-    # return render(request, 'myapp/delete_all_books.html')
 
 
 def export_books(request):
@@ -50,14 +48,55 @@ def welcome_view(request):
     return render(request, 'myapp/welcome.html', {'name': 'Zack'})
 
 
-def book_detail_view(request):
-    obj = Book.objects.get(id=1)
-    # context = {
-    #     'title': obj.title,
-    #     'price': obj.price
-    # }
-    context = {'object': obj}
-    return render(request, "myapp/detail.html", context)
+def book_delete_view(request, _id):
+    if request.method == 'POST':
+        book = get_object_or_404(Book, id=_id)
+        book.delete()
+        return redirect('myapp:book_list')  # Redirect to the book list view
+    else:
+        return HttpResponse("Not available for now")
+
+
+class BookListView(ListView):
+    queryset = Book.objects.all()
+    template_name = 'myapp/book_list.html'
+    context_object_name = 'objects'
+
+
+class BookDetailView(DetailView):
+    template_name = 'myapp/detail.html'
+    context_object_name = 'object'
+
+    def get_object(self, **kwargs):
+        id_ = self.kwargs.get("id")
+        return get_object_or_404(Book, id=id_)
+
+
+class BookUpdateView(UpdateView):
+    form_class = BookForm
+    queryset = Book.objects.all()
+    template_name = 'myapp/add_book.html'
+    success_url = reverse_lazy('myapp:book_list')
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    def get_initial(self):
+        # Retrieve the existing values from the model instance
+        initial = super().get_initial()
+        book = self.get_object()
+        initial['title'] = book.title
+        initial['author'] = book.author
+        initial['price'] = book.price
+        return initial
+
+    def get(self, request, *args, **kwargs):
+        form = self.get_form()
+        return self.render_to_response({'form': form, 'mode': 'Update'})
+
+    def get_object(self, **kwargs):
+        id_ = self.kwargs.get("id")
+        return get_object_or_404(Book, id=id_)
 
 
 # API views
