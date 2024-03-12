@@ -8,6 +8,7 @@ from .models import Book
 from .forms import BookForm
 from rest_framework import generics
 from .serializers import BookSerializer
+from authors.models import Author
 
 
 class BookCreateView(CreateView):
@@ -17,6 +18,12 @@ class BookCreateView(CreateView):
     success_url = reverse_lazy('myapp:book_list')
 
     def form_valid(self, form):
+        author_name = form.cleaned_data['author']
+        print("****")
+        author, created = Author.objects.get_or_create(name=author_name)
+        print(author, created, "****")
+        # Set the author for the book
+        form.instance.author = author
         return super().form_valid(form)
 
     def get(self, request, *args, **kwargs):

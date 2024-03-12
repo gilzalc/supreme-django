@@ -4,12 +4,14 @@ from _decimal import Decimal
 from django.core.validators import MinValueValidator
 from django.urls import reverse
 from django.db import models
+from booksearch.models import SearchableMixin
+from authors.models import Author
 
 
-class Book(models.Model):
+class Book(SearchableMixin, models.Model):
     # objects = None
     title = models.CharField(max_length=200, blank=False, null=False)
-    author = models.CharField(max_length=100, blank=False, null=False)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     price = models.DecimalField(
         max_digits=1000,
         decimal_places=2,
@@ -23,6 +25,9 @@ class Book(models.Model):
 
     def __str__(self):
         return f"{self.title} Object ID: {self.id})"
+
+    def generate_searchable_text(self):
+        return f"{self.title} {self.author.name} {self.price} {self.id}"
 
     # def save(self, *args, **kwargs):
     #     # Capitalize the title before saving
