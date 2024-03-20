@@ -5,7 +5,7 @@ from .views import export_books, BookListAPIView, book_delete_view, delete_all_b
 
 app_name = 'myapp'
 urlpatterns = [
-    path('api/books/', BookListAPIView.as_view(), name='book-list-api'),
+    # path('api/books/', BookListAPIView.as_view(), name='book-list-api'),
     path('book_list/', BookListView.as_view(), name='book_list'),
     path('detail/<int:id>', BookDetailView.as_view(), name='book_detail'),
     path('detail/<int:id>/delete', book_delete_view, name='book_delete'),

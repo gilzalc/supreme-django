@@ -23,11 +23,19 @@
 
 <br>
 <!-- Add a search form -->
-<form method="GET" action="{% url 'search_view' model='book' %}">
+<form method="GET" action="{% url 'search_view' model='book' app='myapp' %}">
     <label for="search_query">Search:</label>
     <input type="text" name="query" id="search_query">
-    <button type="submit">Search</button>
+    <button type="submit">Search books</button>
 </form>
+
+<br>
+
+<form method="GET" action="{% url 'search_view' model='author' app='authors'  %}">
+    <input type="text" name="query" id="search_query2">
+    <button type="submit">Search authors</button>
+</form>
+
 
 <a href="{% url 'myapp:book_list' %}">Back to Book List</a>
 {% endblock %}

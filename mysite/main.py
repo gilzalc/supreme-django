@@ -1,6 +1,7 @@
 import json
 import requests
 
+
 def get_news_from_api(api_key, topic):
     base_url = 'https://newsapi.org/v2/everything?q=JohnCena&from=2024-03-11&to=2024-03-11&sortBy=popularity&apiKey=e4b99ccda2554eb3bde8bce8a4eb1b12'
     # params = {
@@ -30,9 +31,8 @@ def get_news_from_api(api_key, topic):
             print(article)
 
     else:
-        print(f"Failed to retrieve news from API. Status code: {response.status_code}")
-
-
+        print(
+            f"Failed to retrieve news from API. Status code: {response.status_code}")
 
 
 def get_books_api():
