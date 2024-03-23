@@ -2,11 +2,12 @@
 import csv
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView, \
+    DeleteView
 from django.shortcuts import render, redirect, get_object_or_404
+
 from .models import Book
 from .forms import BookForm
-from rest_framework import generics
 from .serializers import BookSerializer
 from authors.models import Author
 
@@ -39,29 +40,23 @@ def delete_all_books(request):
 
 
 def export_books(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="books.csv"'
+    if request.method == 'GET':
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="books.csv"'
 
-    writer = csv.writer(response)
-    writer.writerow(['Title', 'Author'])
+        writer = csv.writer(response)
+        writer.writerow(['Title', 'Author'])
 
-    books = Book.objects.all()
-    for book in books:
-        writer.writerow([book.title, book.author])
-    return response
+        books = Book.objects.all()
+        for book in books:
+            writer.writerow([book.title, book.author])
+        return response
+    else:
+        return 'not supported'
 
 
 def welcome_view(request):
     return render(request, 'myapp/welcome.html', {'name': 'Zack'})
-
-
-def book_delete_view(request, _id):
-    if request.method == 'POST':
-        book = get_object_or_404(Book, id=_id)
-        book.delete()
-        return redirect('myapp:book_list')  # Redirect to the book list view
-    else:
-        return HttpResponse("Not available for now")
 
 
 class BookListView(ListView):
@@ -106,7 +101,26 @@ class BookUpdateView(UpdateView):
         return get_object_or_404(Book, id=id_)
 
 
-# API views
-class BookListAPIView(generics.ListAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+def book_delete_view(request, id):
+    if request.method == 'POST':
+        book = get_object_or_404(Book, id=id)
+        book.delete()
+        return redirect('myapp:book_list')  # Redirect to the book list view
+    else:
+        return HttpResponse("Not available for now")
+
+
+class BookDeleteView(DeleteView):
+    model = Book
+    template_name = 'myapp/book_confirm_delete.html'
+    success_url = reverse_lazy('myapp:book_list')
+    def get_object(self, queryset=None):
+        # Retrieve the book object to be deleted
+        id_ = self.kwargs.get("id")
+        return get_object_or_404(Book, id=id_)
+
+    def delete(self, request, *args, **kwargs):
+        # Override the delete method to perform additional actions if needed
+        # For example, you can send a confirmation email before deleting
+        print(666666666666666666666)
+        return super().delete(request, *args, **kwargs)

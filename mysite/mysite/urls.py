@@ -24,7 +24,7 @@ from pages.views import welcome_view
 urlpatterns = [
     path('', welcome_view, name='home'),
     path('admin/', admin.site.urls),
-    path('api/',include('api.urls')),
+    path('api/', include('api.urls')),
     path("__debug__/", include(debug_toolbar.urls)),
     path('', include('myapp.urls', namespace='myapp')),
     path('search/', include('booksearch.urls'))]

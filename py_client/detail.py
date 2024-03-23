@@ -3,9 +3,9 @@ import json
 
 # from bs4 import BeautifulSoup
 if __name__ == '__main__':
-    endpoint = "http://127.0.0.1:8000/detail/7/delete"
+    endpoint = "http://127.0.0.1:8000/api/books/3/"
 
-    response = requests.post(endpoint, data={'title': 'Noam moss'})
+    response = requests.get(endpoint)
 
     # Prettify the JSON response using json.dumps()
     print(response.text)

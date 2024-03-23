@@ -26,3 +26,6 @@ Keyboard shortcuts:
 11. **Switcher**: **`Ctrl`** + **`Tab`**
     - Opens the "Switcher" dialog, allowing you to quickly switch between opened tabs and tool windows.
 12. **Multiline**: **`Alt`** + **`Shift`** + **`Insert`**
+
+
+https://www.youtube.com/results?search_query=try+django+3.2
