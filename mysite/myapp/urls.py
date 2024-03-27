@@ -2,6 +2,7 @@
 from django.urls import path
 from .views import export_books, BookDeleteView, delete_all_books, BookListView, \
     BookDetailView, BookCreateView, BookUpdateView
+from .viewsets import *
 
 app_name = 'myapp'
 urlpatterns = [

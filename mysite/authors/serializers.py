@@ -6,3 +6,4 @@ class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
         fields = ['name', 'birth_date']  # Include fields from the Author model
+    # def is_valid(self, *, raise_exception=False):

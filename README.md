@@ -27,5 +27,11 @@ Keyboard shortcuts:
     - Opens the "Switcher" dialog, allowing you to quickly switch between opened tabs and tool windows.
 12. **Multiline**: **`Alt`** + **`Shift`** + **`Insert`**
 
-
+Further read:
 https://www.youtube.com/results?search_query=try+django+3.2
+
+https://www.django-rest-framework.org/api-guide/permissions/#custom-permissions
+
+
+ the Classy Django REST Framework resource provides a browsable reference, with full methods and attributes, for each of Django REST Framework's class-based views:
+https://www.cdrf.co/

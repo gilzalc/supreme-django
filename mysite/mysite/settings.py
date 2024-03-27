@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # Django third party
     'debug_toolbar',
     'rest_framework',
+    'rest_framework.authtoken',
     # Built-in
     'django.contrib.admin',
     'django.contrib.auth',
@@ -47,7 +48,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -131,3 +131,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = [
     "127.0.0.1"
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ['rest_framework.authentication.SessionAuthentication',
+                                       'api.authentication.TokenAuthentication'],
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticatedOrReadOnly']
+}

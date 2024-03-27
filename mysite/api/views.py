@@ -1,57 +1,21 @@
 # api\views
 import json
+from myapp.models import Book
+from myapp.serializers import BookSerializer
 from django.shortcuts import render
 from django.forms.models import model_to_dict
 from django.http import JsonResponse, HttpResponse
-from myapp.models import Book
-from myapp.serializers import BookSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import generics, mixins, viewsets
 from django.shortcuts import get_object_or_404
-
-
-class MyModelViewSet(viewsets.ModelViewSet):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-
-
-class BookDetailAPIView(generics.RetrieveAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    # lookup_field = 'pk'
-
-
-class BookDeleteAPIView(generics.DestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    lookup_field = 'pk'
-
-
-class BookUpdateAPIView(generics.UpdateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    lookup_field = 'pk'
-
-    # def update(self, instance, validated_data):
-    #     # Update author data if provided
-    #     author_data = validated_data.pop('author', None)
-    #     if author_data:
-    #         author_instance = instance.author
-    #         for key, value in author_data.items():
-    #             setattr(author_instance, key, value)
-    #         author_instance.save()
-    #     # Update book instance fields
-    #     for key, value in validated_data.items():
-    #         setattr(instance, key, value)
-    #     instance.save()
-    #     return instance
+from rest_framework import generics, mixins, viewsets, permissions
+from .mixins import StaffEditorPermissionMixin
 
 
 class BookMixinView(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin,
                     mixins.UpdateModelMixin, mixins.DestroyModelMixin,
                     generics.GenericAPIView):
-
+    permission_classes = [permissions.DjangoModelPermissions]
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     lookup_field = 'pk'
@@ -69,13 +33,14 @@ class BookMixinView(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cre
         return self.update(request, *args, **kwargs)
 
     def patch(self, request, *args, **kwargs):
-        return self.partial_update( request, *args, **kwargs)
+        return self.partial_update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
 
-class BookListCreateAPIView(generics.ListCreateAPIView):
+class BookListCreateAPIView(StaffEditorPermissionMixin,
+                            generics.ListCreateAPIView):
     """
     When a GET request is sent to the API endpoint associated with
     BookListCreateAPIView, the view will return a list of existing book objects.
@@ -89,15 +54,76 @@ class BookListCreateAPIView(generics.ListCreateAPIView):
         # serializer.save(user=self.request.user)
         content = serializer.validated_data.get('content') or None
         title = serializer.validated_data.get('title')
-        print('******')
+        print('******perform_create')
         if content is None:
             content = title + ' content vers'
         serializer.save(content=content)
-        # TODO
+
+    def create(self, request, *args, **kwargs):
+        print("hello from create in API view create")
+        return super().create(request, *args, **kwargs)
 
 
-#         Create book and reference an already existing Author
-#         by pk or by name.
+class BookDetailAPIView(StaffEditorPermissionMixin, generics.RetrieveAPIView
+                        ):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+
+class BookUpdateAPIView(StaffEditorPermissionMixin, generics.UpdateAPIView
+                        ):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    lookup_field = 'pk'
+
+
+    def update(self, request, *args, **kwargs):
+        print('update')
+        print(request.data)
+        author_data = request.data.pop('author')
+        print(author_data)
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial,
+                                         context=author_data)
+        print(serializer.context)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
+    def perform_update(self, serializer):
+        author_data = serializer.context  # Retrieve author data from context
+        print(author_data)
+        # If author_data exists, add it to validated_data
+        if author_data:
+            serializer.validated_data['author'] = author_data
+        print('perform_update')
+        serializer.save()
+
+
+class BookDeleteAPIView(StaffEditorPermissionMixin, generics.DestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    lookup_field = 'pk'
+
+    # def update(self, instance, validated_data):
+    #     # Update author data if provided
+    #     author_data = validated_data.pop('author', None)
+    #     if author_data:
+    #         author_instance = instance.author
+    #         for key, value in author_data.items():
+    #             setattr(author_instance, key, value)
+    #         author_instance.save()
+    #     # Update book instance fields
+    #     for key, value in validated_data.items():
+    #         setattr(instance, key, value)
+    #     instance.save()
+    #     return instance
 
 
 def api_home_JSON_response(request, *args, **kwargs):

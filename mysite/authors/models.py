@@ -10,7 +10,7 @@ from booksearch.models import SearchableModel
 
 class Author(SearchableModel, models.Model):
     # objects = None
-    name = models.CharField(max_length=100, blank=False, null=False)
+    name = models.CharField(max_length=100, blank=False, null=False, unique=True)
     birth_date = models.DateField(null=True,
                                   default=datetime.date.today)
 
