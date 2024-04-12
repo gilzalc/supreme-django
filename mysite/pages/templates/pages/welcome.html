@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 {% block title %}Welcome to My Django App{% endblock %}
 {% block styles %}
-    <style>
+<style>
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f7f7f7;
@@ -24,14 +24,17 @@
             font-size: 18px;
             text-align: center;
         }
-    </style>
+
+
+</style>
 {% endblock %}
 
 {% block content %}
-    <h1>Welcome to My Django App</h1>
-    {% if name %}
-        <h1>{{ name }}</h1>
-    {% endif %}
-    <p>Enjoy your Django journey!</p>
-    {{ request.user }}
+<h1>Welcome to My Django App</h1>
+{% if name %}
+<h1>{{ name }}</h1>
+{% endif %}
+<p>Enjoy your Django journey!</p>
+{{ request.user }}
 {% endblock %}
+

@@ -35,3 +35,6 @@ https://www.django-rest-framework.org/api-guide/permissions/#custom-permissions
 
  the Classy Django REST Framework resource provides a browsable reference, with full methods and attributes, for each of Django REST Framework's class-based views:
 https://www.cdrf.co/
+
+
+

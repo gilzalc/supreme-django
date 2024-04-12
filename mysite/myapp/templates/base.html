@@ -1,3 +1,4 @@
+<!--{% load static %}-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,5 +14,10 @@
     <div id="footer">
         <p>&copy; 2024 My Website. All rights reserved.</p>
     </div>
+
+    {% block scripts %}
+    <!-- Include your JavaScript file here -->
+    <script src="{% static 'js/example.js' %}"></script>
+    {% endblock %}
 </body>
 </html>

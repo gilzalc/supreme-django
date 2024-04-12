@@ -1,24 +1,35 @@
-import requests
-import json
-from bs4 import BeautifulSoup
-
-# from bs4 import BeautifulSoup
+import praw
+"""
+Reddit:
+id : 
+uMDtYdkzqU6OEw5tqzNQBQ
+secret: 
+G1rN_T0bpOyVXz3xiONPdlnjcxrcBg
+name: 
+app123
+user: 
+Ok-Guess7756
+"""
 if __name__ == '__main__':
-    endpoint = "https://www.transfermarkt.com/copa-libertadores/marktwerte/pokalwettbewerb/CLI"
+    reddit = praw.Reddit(
+        client_id='uMDtYdkzqU6OEw5tqzNQBQ',
+        client_secret='G1rN_T0bpOyVXz3xiONPdlnjcxrcBg',
+        redirect_uri='http://localhost:8080',
+        user_agent='app123/1.0 by /u/Ok-Guess7756'
+    )
 
-    response = requests.get(endpoint)
+    # auth_url = reddit.auth.url(['identity', 'submit'], 'UniqueState', 'permanent')
+    # print("Please go to this URL and authorize access:", auth_url)
 
-    # Prettify the JSON response using json.dumps()
-    # print(response.text)
-    # prettified_json = json.dumps(response.json(), indent=8)
-    # print(prettified_json)
+    subreddit = reddit.subreddit('learnpython')
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
+    # Iterate through the top posts in the subreddit
+    for submission in subreddit.top(limit=5):  # Limit to 5 top posts
+        # print(f'Title: {submission.title}')
+        # print(f'Score: {submission.score}')
+        # print(f'selftext: {submission.selftext}')
+        # print(f'URL: {submission.url}')
+        # print('---------------------------------\n')
+        x = submission.selftext
 
-    page = "https://www.transfermarkt.com/copa-libertadores/marktwerte/pokalwettbewerb/CLI"
-
-    pageTree = requests.get(page, headers=headers)
-    pageSoup = BeautifulSoup(pageTree.content, 'html.parser')
-    pageSoup = pageSoup.prettify()
-    print(pageSoup)
+    print(x.upper())

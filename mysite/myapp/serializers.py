@@ -29,11 +29,11 @@ class BookSerializer(serializers.ModelSerializer):
     #
     def create(self, validated_data):
         # Extract nested author data
-        print("hello from create in serializer ")
+        print("hello from create in serializer")
         print(validated_data)
         author_data = validated_data.pop('author')
-        author_name = author_data.get('name')
-        # author_exists = Author.objects.filter(name=author_name).first()
+        author_name = author_data.get('name')[:-2]
+        print(author_name," after trim")
         author_instance, created = Author.objects.get_or_create(name=author_name, defaults=author_data)
         # Create book instance with the created author instance
         book_instance = Book.objects.create(author=author_instance,
