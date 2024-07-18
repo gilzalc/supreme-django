@@ -27,6 +27,16 @@ Keyboard shortcuts:
     - Opens the "Switcher" dialog, allowing you to quickly switch between opened tabs and tool windows.
 12. **Multiline**: **`Alt`** + **`Shift`** + **`Insert`**
 
+Mouse shortcuts:
+1. Move Code Blocks:
+
+Click and hold the left mouse button on a code block.
+
+Drag the code block to a new location while holding the button.
+
+Release the mouse button to drop the code block in its new position
+
+
 Further read:
 https://www.youtube.com/results?search_query=try+django+3.2
 

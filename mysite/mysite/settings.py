@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'pages',
     'authors',
     # Django third party
+    'corsheaders',
     'debug_toolbar',
     'rest_framework',
     'rest_framework.authtoken',
@@ -50,6 +51,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -135,8 +138,8 @@ INTERNAL_IPS = [
 ]
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": ['rest_framework.authentication.SessionAuthentication',
-                                       'api.authentication.TokenAuthentication'],
-    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticatedOrReadOnly']
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [],
 }
 
+CORS_ORIGIN_ALLOW_ALL = True  # Allow all origins for development (change in production)

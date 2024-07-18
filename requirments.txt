@@ -1,9 +1,0 @@
-djangorestframework==3.14.0
-requests
-pyyaml
-django-cors-headers
-Django==4.2.10
-django-debug-toolbar==4.3.0
-pytz==2024.1
-beautifulsoup4
-selenium
